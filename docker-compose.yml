@@ -1,8 +1,8 @@
 services:
-  stat-server:
+  stats-server:
     build:
       context: ./stat-svc/stat-server
-    image: stat-server
+    image: stats-server
     container_name: stat-server
     ports:
       - "9090:9090"
