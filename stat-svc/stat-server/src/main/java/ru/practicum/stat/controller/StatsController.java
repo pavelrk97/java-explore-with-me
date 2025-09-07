@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.stat.EndpointHitCreateDto;
 import ru.practicum.stat.EndpointHitDto;
+import ru.practicum.stat.StatsRequestDto;
 import ru.practicum.stat.ViewStatsDto;
 import ru.practicum.stat.service.StatisticsService;
 
@@ -32,7 +33,16 @@ public class StatsController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
             @RequestParam(required = false) List<String> uris,
             @RequestParam(defaultValue = "false") Boolean unique) {
-        log.info("GET запрос на получение статистики ");
-        return statisticsService.getStats(start, end, uris, unique);
+
+        log.info("GET запрос на получение статистики: start={}, end={}, uris={}, unique={}", start, end, uris, unique);
+
+        StatsRequestDto request = StatsRequestDto.builder()
+                .start(start)
+                .end(end)
+                .uris(uris)
+                .unique(unique)
+                .build();
+
+        return statisticsService.getStats(request);
     }
 }

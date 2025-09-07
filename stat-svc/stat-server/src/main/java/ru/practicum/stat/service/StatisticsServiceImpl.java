@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.stat.EndpointHitRepository;
-import ru.practicum.stat.EndpointHitCreateDto;
-import ru.practicum.stat.EndpointHitDto;
-import ru.practicum.stat.ViewStatsDto;
+import ru.practicum.stat.*;
 import ru.practicum.stat.mapper.EndpointHitMapper;
 import ru.practicum.stat.mapper.ViewStatsMapper;
 import ru.practicum.stat.model.EndpointHit;
@@ -35,21 +32,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        log.info("Получение статистики с start={}, end={}, uris={}, unique={}", start, end, uris, unique);
+    public List<ViewStatsDto> getStats(StatsRequestDto request) {
+        log.info("Получение статистики: {}", request);
 
         List<ViewStats> viewStats;
-        if (unique) {
-            if (uris != null && !uris.isEmpty()) {
-                viewStats = endpointHitRepository.findStatsUniqueIp(start, end, uris);
+        if (Boolean.TRUE.equals(request.getUnique())) {
+            if (request.getUris() != null && !request.getUris().isEmpty()) {
+                viewStats = endpointHitRepository.findStatsUniqueIp(request.getStart(), request.getEnd(), request.getUris());
             } else {
-                viewStats = endpointHitRepository.findStatsUniqueIpAllUris(start, end);
+                viewStats = endpointHitRepository.findStatsUniqueIpAllUris(request.getStart(), request.getEnd());
             }
         } else {
-            if (uris != null && !uris.isEmpty()) {
-                viewStats = endpointHitRepository.findStats(start, end, uris);
+            if (request.getUris() != null && !request.getUris().isEmpty()) {
+                viewStats = endpointHitRepository.findStats(request.getStart(), request.getEnd(), request.getUris());
             } else {
-                viewStats = endpointHitRepository.findStatsAllUris(start, end);
+                viewStats = endpointHitRepository.findStatsAllUris(request.getStart(), request.getEnd());
             }
         }
         log.info("Получена статистика: {}", viewStats);
