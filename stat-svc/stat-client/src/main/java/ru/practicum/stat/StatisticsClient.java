@@ -32,7 +32,7 @@ public class StatisticsClient extends BaseClient {
                         .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                         .build()
         );
-        this.appName = appName ;
+        this.appName = appName;
     }
 
     public ResponseEntity<Object> create(HttpServletRequest request) {
