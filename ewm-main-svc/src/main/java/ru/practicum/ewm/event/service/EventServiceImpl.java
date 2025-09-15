@@ -240,10 +240,17 @@ public class EventServiceImpl implements EventService {
 
         List<Event> eventList;
         try {
-            eventList = eventRepository.findAllByAdmin(params.getUsers(), params.getStates(), params.getCategories(), params.getRangeStart(), params.getRangeEnd(), pageable);
+            eventList = eventRepository.findAllByAdmin(
+                    params.getUsers(),
+                    params.getStates(),
+                    params.getCategories(),
+                    params.getRangeStart(),
+                    params.getRangeEnd(),
+                    pageable
+            );
         } catch (Exception e) {
-            log.error("Ошибка при выполнении запроса к БД: ", e);
-            throw new RuntimeException("Ошибка при получении данных из базы данных", e);
+            log.error("Ошибка при выполнении запроса к БД для поиска событий админом", e);
+            throw new DatabaseAccessException("Не удалось получить события из базы данных", e);
         }
 
         List<Long> eventIds = eventList.stream().map(Event::getId).collect(Collectors.toList());
