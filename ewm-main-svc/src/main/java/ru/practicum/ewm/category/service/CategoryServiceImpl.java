@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,9 +75,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryDto> getAllCategories(int from, int size) {
-        Pageable pageable = PageRequest.of(from / size, size);
+    public List<CategoryDto> getAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable)
-                .stream().map(CategoryMapper::toCategoryDto).collect(Collectors.toList());
+                .stream()
+                .map(CategoryMapper::toCategoryDto)
+                .collect(Collectors.toList());
     }
 }
