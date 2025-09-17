@@ -25,4 +25,5 @@ public class User {
     @Column(name = "allow_subscriptions", nullable = false)
     @Builder.Default
     boolean allowSubscriptions = true;
+
 }
