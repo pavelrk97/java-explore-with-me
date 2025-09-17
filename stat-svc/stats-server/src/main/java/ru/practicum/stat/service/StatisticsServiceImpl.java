@@ -34,6 +34,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<ViewStatsDto> getStats(StatsRequestDto request) {
         log.info("Получение статистики: {}", request);
 
+        if (request.getStart().isAfter(request.getEnd())) {
+            throw new IllegalArgumentException("Дата начала периода не может быть позже даты конца периода");
+        }
+
         List<ViewStats> viewStats;
         if (Boolean.TRUE.equals(request.getUnique())) {
             if (request.getUris() != null && !request.getUris().isEmpty()) {
