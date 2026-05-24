@@ -91,10 +91,11 @@ GET /actuator/health
 
 ## API
 
-OpenAPI-спецификации:
+Документация автогенерируется из кода через **springdoc-openapi**.
+После запуска контейнеров:
 
-- [docs/api/ewm-main-service.json](docs/api/ewm-main-service.json)
-- [docs/api/ewm-stats-service.json](docs/api/ewm-stats-service.json)
+- `ewm-main-svc` — Swagger UI на `http://localhost:8080/swagger-ui.html`, OpenAPI JSON на `http://localhost:8080/v3/api-docs`
+- `stats-server` — Swagger UI на `http://localhost:9090/swagger-ui.html`, OpenAPI JSON на `http://localhost:9090/v3/api-docs`
 
 ## Качество кода
 
@@ -105,8 +106,8 @@ mvn -P coverage verify     # + JaCoCo report
 
 ## Roadmap
 
-- [ ] **Liquibase** вместо `schema.sql` — версионирование схемы
-- [ ] **springdoc-openapi** — автогенерация OpenAPI и Swagger UI
-- [ ] **`@Async`** для отправки хитов в `stats-server`, чтобы не блокировать hot path
+- [x] **Liquibase** вместо `schema.sql` — версионирование схемы
+- [x] **springdoc-openapi** — автогенерация OpenAPI и Swagger UI
+- [x] **`@Async`** для отправки хитов в `stats-server`, чтобы не блокировать hot path
 - [ ] **Spring Security + Keycloak**: OIDC, замена `userId` из URL на `@AuthenticationPrincipal`, роли `USER`/`ADMIN`
 - [ ] **Тесты**: JUnit 5 + Mockito (сервисы), `@WebMvcTest` (контроллеры), Testcontainers (интеграция)
