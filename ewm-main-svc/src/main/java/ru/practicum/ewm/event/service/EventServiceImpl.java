@@ -29,6 +29,7 @@ import ru.practicum.ewm.location.LocationRepository;
 import ru.practicum.ewm.location.mapper.LocationMapper;
 import ru.practicum.ewm.location.model.Location;
 import ru.practicum.ewm.request.EventRequestRepository;
+import ru.practicum.ewm.stats.AsyncStatsClient;
 import ru.practicum.ewm.user.UserRepository;
 import ru.practicum.ewm.user.mapper.UserMapper;
 import ru.practicum.ewm.user.model.User;
@@ -58,6 +59,7 @@ public class EventServiceImpl implements EventService {
     EventRequestRepository eventRequestRepository;
 
     StatisticsClient statClient;
+    AsyncStatsClient asyncStatsClient;
     ObjectMapper mapper;
 
     @Override
@@ -382,12 +384,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private void sendStats(HttpServletRequest request) {
-        try {
-            statClient.create(request);
-        } catch (Exception e) {
-            log.error("Ошибка при отправке статистики: {}", e.getMessage());
-
-        }
+        asyncStatsClient.sendHit(request.getRequestURI(), request.getRemoteAddr());
     }
 
     private Long getViews(Long eventId, LocalDateTime createdOn, HttpServletRequest request) {

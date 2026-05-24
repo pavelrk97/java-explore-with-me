@@ -47,6 +47,10 @@ public class StatisticsClient extends BaseClient {
         return post(endpointHitCreateDto);
     }
 
+    public ResponseEntity<Object> create(EndpointHitCreateDto dto) {
+        return post(dto);
+    }
+
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/stats")
