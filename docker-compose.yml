@@ -25,6 +25,7 @@ services:
       context: ./ewm-main-svc
     image: ewm-service
     container_name: ewm-service
+    restart: on-failure
     ports:
       - "8080:8080"
     environment:
@@ -38,6 +39,8 @@ services:
         condition: service_healthy
       stats-server:
         condition: service_healthy
+      keycloak:
+        condition: service_started
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health | grep UP || exit 1" ]
       interval: 10s
@@ -73,4 +76,18 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.2
+    container_name: keycloak
+    ports:
+      - "8180:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_URL=http://keycloak:8080
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
+    command: start-dev --import-realm
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import

@@ -1,0 +1,46 @@
+{
+  "realm": "ewm",
+  "enabled": true,
+  "attributes": {
+    "frontendUrl": "http://keycloak:8080"
+  },
+  "clients": [
+    {
+      "clientId": "ewm-client",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"]
+    }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "user" },
+      { "name": "admin" }
+    ]
+  },
+  "users": [
+    {
+      "username": "user1",
+      "email": "user1@ewm.ru",
+      "firstName": "User",
+      "lastName": "One",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+      "realmRoles": ["user"]
+    },
+    {
+      "username": "admin1",
+      "email": "admin1@ewm.ru",
+      "firstName": "Admin",
+      "lastName": "One",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+      "realmRoles": ["user", "admin"]
+    }
+  ]
+}
